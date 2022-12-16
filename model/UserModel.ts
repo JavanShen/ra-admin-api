@@ -1,11 +1,12 @@
-import { userList } from "../data/user";
+import { Schema, model } from "mongoose";
+import type { User } from "../types/user";
 
-export default {
-    addUser(username: string, password: string, role: string) {
-        userList.push({
-            username,
-            password,
-            role
-        })
-    }
-}
+const userSchema = new Schema<User>({
+    username: String,
+    password: String,
+    role: String
+})
+
+const UserModel = model<User>('User', userSchema)
+
+export default UserModel

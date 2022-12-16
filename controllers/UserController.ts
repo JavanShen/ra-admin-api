@@ -1,10 +1,9 @@
 import { verifyUsername, verifyPassword, verifyUserExist } from "../utils/validate"
-import { findUser } from "../utils/find"
 import jwt from "../utils/jwt"
-import UserModel from "../model/UserModel"
+import UserServer from "../server/UserServer"
 
 export default {
-    login(username: unknown, password: unknown){
+    async login(username: unknown, password: unknown){
         if (!verifyUsername(username)) return {
             code: 0,
             message: '用户名格式错误'
@@ -15,12 +14,12 @@ export default {
             message: '密码格式错误'
         }
 
-        if (!verifyUserExist(username as string)) return {
+        if (!await verifyUserExist(username as string)) return {
             code: 0,
             message: '用户名不存在'
         }
 
-        const user = findUser(username as string)
+        const [user] = await UserServer.findUserByUserName(username as string)
 
         if (user?.password !== password) return {
             code: 0,
@@ -37,7 +36,7 @@ export default {
             token
         }
     },
-    register(username: unknown, password: unknown) {
+    async register(username: unknown, password: unknown) {
         if (!verifyUsername(username)) return {
             code: 0,
             message: '用户名格式错误'
@@ -48,12 +47,17 @@ export default {
             message: '密码格式错误'
         }
 
-        if (verifyUserExist(username as string)) return {
+        if (await verifyUserExist(username as string)) return {
             code: 0,
             message: '用户名已存在'
         }
 
-        UserModel.addUser(username as string, password as string, 'user')
+        const res = await UserServer.addUser(username as string, password as string)
+
+        if (!res) return {
+            code: 0,
+            message: '注册失败'
+        }
 
         return {
             code: 1,

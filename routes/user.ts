@@ -3,10 +3,10 @@ import UserController from '../controllers/UserController'
 
 const router = express.Router()
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
     const { body: { username, password } } = req
 
-    const payload = UserController.login(username, password)
+    const payload = await UserController.login(username, password)
     
     if (payload.code === 0) {
         res.send(payload)
@@ -19,10 +19,10 @@ router.post('/login', (req, res) => {
     }
 })
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
     const { body: { username, password } } = req
     
-    const payload = UserController.register(username, password)
+    const payload = await UserController.register(username, password)
     
     res.send(payload)
 })

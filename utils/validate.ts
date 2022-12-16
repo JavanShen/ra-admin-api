@@ -1,4 +1,4 @@
-import { userList } from "../data/user"
+import UserServer from "../server/UserServer"
 
 const verifyUsername = (val: unknown) => {
     if (typeof val !== 'string') return false
@@ -19,8 +19,8 @@ const verifyPassword = (val: unknown) => {
     return true
 }
 
-const verifyUserExist = (username: string) => {
-    return userList.findIndex(item => item.username === username) > -1
+const verifyUserExist = async (username: string) => {
+    return (await UserServer.findUserByUserName(username)).length > 0
 }
 
 export {verifyPassword, verifyUsername, verifyUserExist}

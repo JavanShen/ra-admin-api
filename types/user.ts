@@ -1,6 +1,12 @@
 type Payload = {
-    username: string,
+    username: string
     role: string
 }
 
-export type {Payload}
+type User = {
+    username: string
+    password: string
+    role: string
+}
+
+export type {Payload, User}

@@ -3,15 +3,20 @@ import { UserRouter } from '../routes'
 import jwt from '../utils/jwt'
 import { whiteListUrl } from '../whiteList' 
 import { verifyUserExist } from '../utils/validate'
+import * as dotenv from 'dotenv'
 
 import type { Payload } from '../types/user'
+
+dotenv.config()
+
+import '../config/mongodb'
 
 const app = express()
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
     const { url, headers } = req
 
     if (whiteListUrl.includes(url)) return next()
