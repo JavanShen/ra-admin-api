@@ -18,6 +18,7 @@ app.use(express.json())
 
 app.use((req, res, next) => {
     res.set({
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
         'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE',
         'Content-Type': 'application/json; charset=utf-8',
