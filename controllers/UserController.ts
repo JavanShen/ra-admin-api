@@ -33,6 +33,7 @@ export default {
 
         return {
             code: 1,
+            role: user.role,
             token
         }
     },

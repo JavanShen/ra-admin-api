@@ -14,7 +14,10 @@ router.post('/login', async (req, res) => {
         res.header('Authorization', payload.token)
         res.send({
             code: 1,
-            message: '登录成功'
+            message: '登录成功',
+            data: {
+                role: payload.role || 'user'
+            }
         })
     }
 })
@@ -24,7 +27,10 @@ router.post('/register', async (req, res) => {
     
     const payload = await UserController.register(username, password)
     
-    res.send(payload)
+    res.send({
+        ...payload,
+        data: {}
+    })
 })
 
 export default router
