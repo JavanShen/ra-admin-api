@@ -16,6 +16,15 @@ const app = express()
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
+app.use((req, res, next) => {
+    res.set({
+        'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
+        'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE',
+        'Content-Type': 'application/json; charset=utf-8',
+    })
+    next()
+})
+
 app.use(async (req, res, next) => {
     const { url, headers } = req
 
