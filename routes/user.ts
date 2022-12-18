@@ -15,9 +15,7 @@ router.post('/login', async (req, res) => {
         res.send({
             code: 1,
             message: '登录成功',
-            data: {
-                role: payload.role || 'user'
-            }
+            data: {}
         })
     }
 })
@@ -31,6 +29,29 @@ router.post('/register', async (req, res) => {
         ...payload,
         data: {}
     })
+})
+
+router.get('/userinfo', (req, res) => {
+    const token = res.getHeader('Authorization')
+
+    const {username, role} = UserController.getUserInfoByToken(token as string)
+
+    if (username && role) {
+        res.send({
+            code: 1,
+            message: '获取用户信息成功',
+            data: {
+                username,
+                role
+            }
+        })
+    } else {
+        res.send({
+            code: 0,
+            message: '获取用户信息失败',
+            data: {}
+        })
+    }
 })
 
 export default router
