@@ -18,10 +18,12 @@ app.use(express.json())
 
 app.use((req, res, next) => {
     res.set({
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://ra-admin-ten.vercel.app',
         'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
         'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE',
+        'Access-Control-Expose-Headers': 'Authorization',
         'Content-Type': 'application/json; charset=utf-8',
+        'Vary': 'Origin'
     })
     next()
 })
@@ -38,12 +40,13 @@ app.use(async (req, res, next) => {
 
     if (!payload) return res.status(401).send({ errCode: -1, errInfo: 'token过期' })
     
-    const { username } = payload
+    const { username, role } = payload
 
     if(!verifyUserExist(username)) return res.status(401).send({errCode: -1, errInfo: '无效token'})
 
     const newToken = jwt.generate({
-        username
+        username,
+        role
     }, '1d')
 
     res.header('Authorization', newToken)
