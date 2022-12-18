@@ -2,6 +2,8 @@ import { verifyUsername, verifyPassword, verifyUserExist } from "../utils/valida
 import jwt from "../utils/jwt"
 import UserServer from "../server/UserServer"
 
+import type { Payload } from "../types/user"
+
 export default {
     async login(username: unknown, password: unknown){
         if (!verifyUsername(username)) return {
@@ -33,7 +35,6 @@ export default {
 
         return {
             code: 1,
-            role: user.role,
             token
         }
     },
@@ -64,5 +65,8 @@ export default {
             code: 1,
             message: '注册成功'
         }
+    },
+    getUserInfoByToken(token: string) {
+        return jwt.verify(token) as Payload
     }
 }
